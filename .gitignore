@@ -1,0 +1,26 @@
+#Eclipse IDE files
+.settings
+.autotools
+.cproject
+.project
+
+#Build tools generated files
+autom4te.cache
+aclocal.m4
+m4
+build-aux
+*.in
+*Makefile
+configure
+libtool
+
+#Omit build files
+*.o
+*Makefile
+*.lo
+*.la
+*.deps
+*.libs
+exampleProgram/exampleProgram
+config.log
+config.status

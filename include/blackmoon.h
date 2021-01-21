@@ -99,7 +99,7 @@ struct free_bm_data {
 
 int free_bm_data(struct bm_data **_bm_data, struct free_bm_data va_list);
 
-#define free_bm_data(_bm_data, ...) (free_bm_data)((struct bm_data**) _bm_data, \
+#define free_bm_data(_bm_data, ...) (free_bm_data)(_bm_data, \
 		(struct free_bm_data){.ffunc = bm_free, __VA_ARGS__})
 
 struct bm_bag* create_bm_bag();
@@ -110,7 +110,7 @@ struct free_bm_bag {
 
 int free_bm_bag(struct bm_bag **_bm_bag, struct free_bm_bag va_list);
 
-#define free_bm_bag(_bm_bag, ...) (free_bm_bag)((struct bm_bag**) _bm_bag, \
+#define free_bm_bag(_bm_bag, ...) (free_bm_bag)(_bm_bag, \
 		(struct free_bm_bag) {.ffunc = bm_free, __VA_ARGS__})
 
 int append_bm_pocket(struct bm_bag* bm_bag, long bm_pocket_size);
@@ -121,8 +121,8 @@ struct delete_bm_pocket {
 
 int delete_bm_pocket(struct bm_bag* bm_bag, struct bm_pocket** _bm_pocket, struct delete_bm_pocket va_list);
 
-#define delete_bm_pocket(bm_bag, _bm_pocket, ...) (delete_bm_pocket)((struct bm_bag*) bm_bag, \
-		(struct bm_pocket**) _bm_pocket, (struct delete_bm_pocket) {.ffunc = bm_free, __VA_ARGS__})
+#define delete_bm_pocket(bm_bag, _bm_pocket, ...) (delete_bm_pocket)(bm_bag, _bm_pocket, \
+		(struct delete_bm_pocket) {.ffunc = bm_free, __VA_ARGS__})
 
 int place_bm_data(struct bm_bag *bm_bag, struct bm_data *bm_data);
 

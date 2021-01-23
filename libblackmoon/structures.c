@@ -20,8 +20,8 @@
 #include <stdlib.h>
 
 struct bm_data* create_bm_data(long bm_data_size) {
-    if (bm_data_size < 0)
-	    return NULL;
+	if (bm_data_size < 0)
+		return NULL;
 	else if (bm_data_size == 0)
 		return calloc(1, sizeof(struct bm_data));
 
@@ -45,12 +45,12 @@ struct bm_data* create_bm_data(long bm_data_size) {
 int (free_bm_data)(struct bm_data **_bm_data, struct free_bm_data va_list) {
 	if (_bm_data == NULL || *_bm_data == NULL)
 		return BM_ERROR_INVAL;
-	
+
 	int fd_status = BM_ERROR_NONE;
 
 	if (va_list.ffunc != NULL && (*(va_list.ffunc))((*_bm_data)->data) != BM_ERROR_NONE)
 		fd_status = BM_ERROR_INVAL;
-	
+
 	free(*_bm_data);
 
 	*_bm_data = NULL;
@@ -59,11 +59,11 @@ int (free_bm_data)(struct bm_data **_bm_data, struct free_bm_data va_list) {
 }
 
 struct bm_bag* create_bm_bag() {
-    return calloc(1, sizeof(struct bm_bag));
+	return calloc(1, sizeof(struct bm_bag));
 }
 
 int (free_bm_bag)(struct bm_bag** _bm_bag, struct free_bm_bag va_list) {
-    if (_bm_bag == NULL || *_bm_bag == NULL)
+	if (_bm_bag == NULL || *_bm_bag == NULL)
 		return BM_ERROR_INVAL;
 
 	struct bm_pocket *at = NULL, *prev = NULL;
@@ -162,7 +162,7 @@ int (delete_bm_pocket)(struct bm_bag* bm_bag, struct bm_pocket** _bm_pocket, str
 
 	if (va_list.ffunc != NULL && (*(va_list.ffunc))(bm_pocket->data) != BM_ERROR_NONE)
 		db_status = BM_ERROR_INVAL;
-	
+
 	free(bm_pocket);
 
 	*_bm_pocket = NULL;
@@ -202,7 +202,7 @@ struct bm_data* flatten_bm_bag(struct bm_bag *bm_bag)
 	long t_size = 0;
 
 	for (struct bm_pocket* bm_pocket = bm_bag->start; bm_pocket != NULL; \
-	bm_pocket = bm_pocket->next) {
+			bm_pocket = bm_pocket->next) {
 		t_size = t_size + bm_pocket->size;
 	}
 

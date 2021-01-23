@@ -24,35 +24,35 @@
 
 char* (strlocate)(char* haystack, char* needle, struct strlocate va_list) {
 	if (haystack == NULL || needle == NULL || va_list.hstart < 0 || \
-		va_list.hend < 0 || va_list.nstart < 0 || \
-		va_list.nend < 0 || va_list.hend < va_list.hstart || \
-		va_list.nend < va_list.nstart) {
+			va_list.hend < 0 || va_list.nstart < 0 || \
+			va_list.nend < 0 || va_list.hend < va_list.hstart || \
+			va_list.nend < va_list.nstart) {
 		return NULL;
 	}
 
 	/* Return the string occurrence pointer */
 
 	return memmem(haystack + va_list.hstart, va_list.hend - va_list.hstart + 1, \
-		needle + va_list.nstart, va_list.nend - va_list.nstart + 1);
+			needle + va_list.nstart, va_list.nend - va_list.nstart + 1);
 }
 
 char* (strcaselocate)(char* haystack, char* needle, struct strcaselocate va_list) {
 	if (haystack == NULL || needle == NULL || va_list.hstart < 0 || \
-		va_list.hend < 0 || va_list.nstart < 0 || \
-		va_list.nend < 0 || va_list.hend < va_list.hstart || \
-		va_list.nend < va_list.nstart) {
+			va_list.hend < 0 || va_list.nstart < 0 || \
+			va_list.nend < 0 || va_list.hend < va_list.hstart || \
+			va_list.nend < va_list.nstart) {
 		return NULL;
 	}
 
 	/* Create a new sub_haystack */
 
 	char *sub_haystack = strndup(haystack + va_list.hstart, va_list.hend - \
-							va_list.hstart + 1);
+			va_list.hstart + 1);
 
 	/* Create a new sub_needle */
 
 	char *sub_needle = strndup(needle + va_list.nstart, va_list.nend - \
-						va_list.nstart + 1);
+			va_list.nstart + 1);
 
 	/* Determine the occurrence of needle in sub_haystack */
 
@@ -63,7 +63,7 @@ char* (strcaselocate)(char* haystack, char* needle, struct strcaselocate va_list
 
 	if (hs_needle == NULL)
 		return NULL;
-	
+
 	/* haystack + relative position is the result */
 
 	return haystack + va_list.hstart + ((long) (hs_needle) - (long) (sub_haystack));
@@ -71,7 +71,7 @@ char* (strcaselocate)(char* haystack, char* needle, struct strcaselocate va_list
 
 int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 	if (bm_data == NULL || bm_data->data == NULL || bm_data->size <= 0 || \
-		va_list.max_seek <= 0 || seq_str == NULL) {	// Invalid Request
+			va_list.max_seek <= 0 || seq_str == NULL) {	// Invalid Request
 		va_list.update != NULL ? *(va_list.update) = bm_data : 0;
 		return -1;
 	}
@@ -99,10 +99,10 @@ int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 	struct bm_data *update = NULL;
 
 	if (isflag_set(va_list.flags, BM_UPDATE_INPUT) && \
-		!isflag_set(va_list.flags, BM_FREE_INPUT)) {
+			!isflag_set(va_list.flags, BM_FREE_INPUT)) {
 		bm_data->size = bm_data->size - seek_count;
 		memmove(bm_data->data, bm_data->data + seek_count, bm_data->size);
-		
+
 		update = bm_data;
 	}
 	else if (va_list.update != NULL) {
@@ -121,8 +121,8 @@ int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 
 char* (scopy)(struct bm_data* bm_data, char* seq_str, struct scopy va_list) {
 	if (bm_data == NULL || bm_data->data == NULL || bm_data->size <= 0 \
-		|| va_list.max_copy <= 0 || seq_str == NULL) {	// Invalid Request
-		
+			|| va_list.max_copy <= 0 || seq_str == NULL) {	// Invalid Request
+
 		va_list.update != NULL ? *(va_list.update) = bm_data : 0;
 		return NULL;
 	}
@@ -160,7 +160,7 @@ char* (scopy)(struct bm_data* bm_data, char* seq_str, struct scopy va_list) {
 	struct bm_data *update = NULL;
 
 	if (isflag_set(va_list.flags, BM_UPDATE_INPUT) && \
-		!isflag_set(va_list.flags, BM_FREE_INPUT)) {
+			!isflag_set(va_list.flags, BM_FREE_INPUT)) {
 		bm_data->size = bm_data->size - copy_count;
 		memmove(bm_data->data, bm_data->data + copy_count, bm_data->size);
 
@@ -187,14 +187,14 @@ char* (scopy)(struct bm_data* bm_data, char* seq_str, struct scopy va_list) {
 	}
 
 	va_list.update != NULL ? *(va_list.update) = update : 0;
-		
+
 	return result;
 }
 
 char* bm_strappend(char *first, ...) {
 	if (first == NULL)
 		return NULL;
-	
+
 	va_list ap;
 	/* Compute the memory requirements for new string */
 
@@ -203,7 +203,7 @@ char* bm_strappend(char *first, ...) {
 	char *str;
 
 	for (char *str = va_arg(ap, char*); str != NULL; \
-		str = va_arg(ap, char*)) {
+			str = va_arg(ap, char*)) {
 		t_size = t_size + strlen(str);
 	}
 	va_end(ap);

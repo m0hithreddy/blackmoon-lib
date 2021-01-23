@@ -22,10 +22,10 @@
 
 void
 print_hello(){
-  printf("$(message)\n");
+	printf("$(message)\n");
 }
 
 int bm_free(void *mem) {
-  free(mem);
-  return BM_ERROR_NONE;
+	free(mem);
+	return BM_ERROR_NONE;
 }

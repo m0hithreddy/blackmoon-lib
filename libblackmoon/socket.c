@@ -24,33 +24,33 @@
 #include <unistd.h>
 
 int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_write va_list) {
-    if (sockfd < 0 || bm_data == NULL || \
-        bm_data->data == NULL || bm_data->size <= 0) {
+	if (sockfd < 0 || bm_data == NULL || \
+			bm_data->data == NULL || bm_data->size <= 0) {
 		va_list.status != NULL ? *(va_list.status) = 0 : 0;
 		return BM_ERROR_INVAL;
 	}
 
-    /* Variables needed for end routine */
+	/* Variables needed for end routine */
 
-    int no_block = -1, sock_args = -1, sigfd = -1, return_status = BM_ERROR_NONE;
-    long wr_counter = 0;
+	int no_block = -1, sock_args = -1, sigfd = -1, return_status = BM_ERROR_NONE;
+	long wr_counter = 0;
 
 	/* Set the socket mode to non-blocking */
 
 	sock_args = fcntl(sockfd, F_GETFL);
 
 	if (sock_args < 0) {
-        return_status = BM_ERROR_INVAL;
-        goto write_return;
-    }
+		return_status = BM_ERROR_INVAL;
+		goto write_return;
+	}
 
 	no_block = (sock_args & O_NONBLOCK) > 0;
 
 	if (no_block == 0)
 		if (fcntl(sockfd, F_SETFL, sock_args | O_NONBLOCK) < 0) {
-            return_status = BM_ERROR_INVAL;
-            goto write_return;
-        }
+			return_status = BM_ERROR_INVAL;
+			goto write_return;
+		}
 
 	/* Timeout initializations */
 
@@ -60,7 +60,7 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 		wr_time.tv_sec = va_list.io_timeout;
 		wr_time.tv_usec  = 0;
 	}
-	
+
 	/* Select initializations */
 
 	fd_set wr_set, tw_set;
@@ -78,7 +78,7 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 
 		if (sigfd < 0) {
 			return_status = BM_ERROR_INVAL;
-            goto write_return;
+			goto write_return;
 		}
 
 		FD_SET(sigfd, &rd_set);
@@ -94,7 +94,7 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 
 		tw_set = wr_set;
 		sl_status = select(maxfds, va_list.sigmask == NULL ? NULL : (tr_set = rd_set, &tr_set), \
-                    &tw_set, NULL, va_list.io_timeout >= 0 ? (tp_time = wr_time, &tp_time) : NULL);
+				&tw_set, NULL, va_list.io_timeout >= 0 ? (tp_time = wr_time, &tp_time) : NULL);
 
 		/* Check select return status */
 
@@ -117,7 +117,7 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 			goto write_return;
 		}
 
-        /* Check if signal received */
+		/* Check if signal received */
 
 		if (va_list.sigmask != NULL) {
 			if (FD_ISSET(sigfd, &tr_set)) {
@@ -186,7 +186,7 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 
 	/* Return procedures */
 
-	write_return:
+write_return:
 
 	/* Revert back the socket mode */
 
@@ -208,34 +208,34 @@ int (bm_socket_write)(int sockfd, struct bm_data *bm_data, struct bm_socket_writ
 }
 
 int (bm_socket_read)(int sockfd, struct bm_data *bm_data, struct bm_socket_read va_list) {
-    	if (sockfd < 0 || bm_data == NULL || \
+	if (sockfd < 0 || bm_data == NULL || \
 			bm_data->data == NULL || bm_data->size <= 0) {
 		va_list.status != NULL ? *(va_list.status) = 0 : 0;
 		return BM_ERROR_INVAL;
 	}
 
-    /* Variables needed for end routine */
+	/* Variables needed for end routine */
 
-    int no_block = -1, sock_args = -1, sigfd = -1, return_status = BM_ERROR_NONE;
-    long rd_counter = 0;
+	int no_block = -1, sock_args = -1, sigfd = -1, return_status = BM_ERROR_NONE;
+	long rd_counter = 0;
 
 	/* Set the socket mode to non-blocking */
 
 	sock_args = fcntl(sockfd, F_GETFL);
 
 	if (sock_args < 0) {
-        return_status = BM_ERROR_INVAL;
+		return_status = BM_ERROR_INVAL;
 		goto read_return;
-    }
+	}
 
 	no_block = (sock_args & O_NONBLOCK) > 0;
 
 	if (no_block == 0)
 		if (fcntl(sockfd, F_SETFL, sock_args | O_NONBLOCK) < 0) {
-            return_status = BM_ERROR_INVAL;
-            goto read_return;
-        }
-	
+			return_status = BM_ERROR_INVAL;
+			goto read_return;
+		}
+
 	/* Timeout initializations */
 
 	struct timeval rd_time, tp_time;
@@ -269,14 +269,14 @@ int (bm_socket_read)(int sockfd, struct bm_data *bm_data, struct bm_socket_read 
 	/* Read from socket or Timeout or Respond to signal */
 
 	long rd_status = 0;
-    int sl_status = 0, maxfds = sigfd > sockfd ? sigfd + 1 : sockfd + 1;
+	int sl_status = 0, maxfds = sigfd > sockfd ? sigfd + 1 : sockfd + 1;
 
 	for ( ; ; ) {
 		/* Wait for an event occur */
 
 		tr_set = rd_set;
 		sl_status = select(maxfds, &tr_set, NULL, NULL, va_list.io_timeout >= 0 ? \
-                    (tp_time = rd_time, &tp_time) : NULL);
+				(tp_time = rd_time, &tp_time) : NULL);
 
 		/* Check for select return status */
 
@@ -317,7 +317,7 @@ int (bm_socket_read)(int sockfd, struct bm_data *bm_data, struct bm_socket_read 
 			goto read_return;
 		}
 
-		 /* Commence the Read operation */
+		/* Commence the Read operation */
 
 		rd_status = read(sockfd, bm_data->data + rd_counter, bm_data->size - rd_counter);
 
@@ -372,9 +372,9 @@ int (bm_socket_read)(int sockfd, struct bm_data *bm_data, struct bm_socket_read 
 
 	/* Return procedures */
 
-	read_return:
+read_return:
 
-	 /* Revert back the socket mode */
+	/* Revert back the socket mode */
 
 	if (no_block == 0) {
 		if (fcntl(sockfd, F_SETFL, sock_args) < 0)

@@ -21,55 +21,55 @@
 #include <string.h>
 
 struct bm_flags bm_set_flags(int first, ...) {
-    struct bm_flags flags;
-    memset(&flags, 0, sizeof(struct bm_flags));
+	struct bm_flags flags;
+	memset(&flags, 0, sizeof(struct bm_flags));
 
-    if (first == -1) // Return with no flag set
-        return flags;
-    
-    /* Iterate through variadac arguments and set flags */
-    va_list ap;
+	if (first == -1) // Return with no flag set
+		return flags;
 
-    va_start(ap, first);
-    int flag;
-    for ( ; ; ) {
-        flag = va_arg(ap, int);
-        if (flag == -1)
-            break;
-        
-        set_bit((void*) flags.f, flag);
-    }
-    va_end(ap);
+	/* Iterate through variadac arguments and set flags */
+	va_list ap;
 
-    return flags;
+	va_start(ap, first);
+	int flag;
+	for ( ; ; ) {
+		flag = va_arg(ap, int);
+		if (flag == -1)
+			break;
+
+		set_bit((void*) flags.f, flag);
+	}
+	va_end(ap);
+
+	return flags;
 }
 
 int isflag_set(struct bm_flags flags, int flag) {
-    if (flag == -1)
-        return 0;
-    
-    /* Compute flag location */
-    int q = flag / sizeof(uint32_t);
-    int r = flag % sizeof(uint32_t);
+	if (flag == -1)
+		return 0;
 
-    return (int) get_bit((void*) &(flags.f[q]), r);
+	/* Compute flag location */
+	int q = flag / sizeof(uint32_t);
+	int r = flag % sizeof(uint32_t);
+
+	return (int) get_bit((void*) &(flags.f[q]), r);
 }
 
 int bm_clear_flags(struct bm_flags flags, ...) {
 
-    /* Iterate through variadic arguments and clear flags */
-    va_list ap;
+	/* Iterate through variadic arguments and clear flags */
+	va_list ap;
 
-    va_start(ap, flags);
-    int flag;
-    for ( ; ; ) {
-        flag = va_arg(ap, int);
-        if (flag == -1)
-            break;
+	va_start(ap, flags);
+	int flag;
+	for ( ; ; ) {
+		flag = va_arg(ap, int);
+		if (flag == -1)
+			break;
 
-        clear_bit((void*) flags.f, flag);
-    }
-    va_end(ap);
+		clear_bit((void*) flags.f, flag);
+	}
+	va_end(ap);
 
-    return BM_ERROR_NONE;
+	return BM_ERROR_NONE;
 }

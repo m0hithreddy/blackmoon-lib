@@ -81,7 +81,7 @@ int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 	char seek_buf[2]; seek_buf[1] = '\0';
 	long seek_count = 0;
 
-	for ( ; seek_count < bm_data->size && seek_count < va_list.max_seek; ) {
+	for ( ; seek_count < bm_data->size && seek_count < va_list.max_seek; seek_count++) {
 		seek_buf[0] = ((char*) bm_data->data)[seek_count];
 
 		if (isflag_set(va_list.flags, BM_SSEEK_PERMIT)) {	// If requested for delimiting operation

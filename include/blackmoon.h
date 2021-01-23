@@ -139,8 +139,13 @@ struct strlocate {
 
 char* strlocate(char* haystack, char* needle, struct strlocate va_list);
 
-#define strlocate(haystack, needle, ...) (strlocate)(haystack, needle, (struct strlocate) {.hstart = 0, \
-		.hend = (int) strlen(haystack), .nstart = 0, .nend = (int) strlen(needle), __VA_ARGS__})
+#define strlocate(haystack, needle, ...) ({ \
+	typeof (haystack) _bm_haystack = haystack; \
+	typeof (needle) _bm_needle = needle; \
+	(strlocate)(_bm_haystack, _bm_needle, (struct strlocate) {.hstart = 0, \
+		.hend = (int) strlen(_bm_haystack) - 1, .nstart = 0, \
+		.nend = (int) strlen(_bm_needle) - 1, __VA_ARGS__}); \
+	})
 
 struct strcaselocate {
 	int hstart;
@@ -151,8 +156,13 @@ struct strcaselocate {
 
 char* strcaselocate(char* haystack, char* needle, struct strcaselocate va_list);
 
-#define strcaselocate(haystack, needle, ...) (strcaselocate)(haystack, needle, (struct strcaselocate) {.hstart = 0, \
-		.hend = (int) strlen(haystack), .nstart = 0, .nend = (int) strlen(needle), __VA_ARGS__})
+#define strcaselocate(haystack, needle, ...) ({ \
+	typeof (haystack) _bm_haystack = haystack; \
+	typeof (needle) _bm_needle = needle; \
+	(strcaselocate)(_bm_haystack, _bm_needle, (struct strcaselocate) {.hstart = 0, \
+		.hend = (int) strlen(_bm_haystack) - 1, .nstart = 0, \
+		.nend = (int) strlen(_bm_needle) - 1, __VA_ARGS__}); \
+	})
 
 struct sseek {
 	struct bm_data **update;

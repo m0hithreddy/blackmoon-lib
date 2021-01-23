@@ -98,8 +98,7 @@ int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 
 	struct bm_data *update = NULL;
 
-	if (isflag_set(va_list.flags, BM_UPDATE_INPUT) && \
-			!isflag_set(va_list.flags, BM_FREE_INPUT)) {
+	if (isflag_set(va_list.flags, BM_UPDATE_INPUT)) {
 		bm_data->size = bm_data->size - seek_count;
 		memmove(bm_data->data, bm_data->data + seek_count, bm_data->size);
 
@@ -112,6 +111,9 @@ int (sseek)(struct bm_data* bm_data, char* seq_str, struct sseek va_list) {
 
 	if (isflag_set(va_list.flags, BM_FREE_INPUT)) {
 		free_bm_data(&bm_data);
+
+		if (isflag_set(va_list.flags, BM_UPDATE_INPUT))
+			update = NULL;
 	}
 
 	va_list.update != NULL ? *(va_list.update) = update : 0;
@@ -159,8 +161,7 @@ char* (scopy)(struct bm_data* bm_data, char* seq_str, struct scopy va_list) {
 
 	struct bm_data *update = NULL;
 
-	if (isflag_set(va_list.flags, BM_UPDATE_INPUT) && \
-			!isflag_set(va_list.flags, BM_FREE_INPUT)) {
+	if (isflag_set(va_list.flags, BM_UPDATE_INPUT)) {
 		bm_data->size = bm_data->size - copy_count;
 		memmove(bm_data->data, bm_data->data + copy_count, bm_data->size);
 
@@ -175,6 +176,9 @@ char* (scopy)(struct bm_data* bm_data, char* seq_str, struct scopy va_list) {
 
 	if (isflag_set(va_list.flags, BM_FREE_INPUT)) {
 		free_bm_data(&bm_data);
+
+		if (isflag_set(va_list.flags, BM_UPDATE_INPUT))
+			update = NULL;
 	}
 
 	/* If caller requested for any seeking operation */
